@@ -1,4 +1,4 @@
-import React from 'react';
+import {useState} from 'react';
 import '../assets/Container.css'
 import EraseBtn from './EraseBtn';
 import Form from './Form';
@@ -6,24 +6,28 @@ import NumOps from './NumOps';
 import Screen from './Screen';
 
 function Container() {
-    // variables para controlar la pantalla 
+    // creamos un estado con un objeto para compartir las variables con los componentes hijos a traves de props
+    const [controlScreen, setControlScreen] = useState({ 
+        x:'0',//x =número en pantalla
+        xi:1,  //xi =iniciar número en pantalla: 1=si; 0=no;
+        coma:0, //coma =estado coma decimal 0=no, 1=si;
+        //ni:0, //ni =número oculto o en espera
+        // op:'no'//op = operación en curso; "no" =  sin operación
+    })
+    
+    function handleControl (modifier) {//como parámetro pasamos los valores que quiero cambiar
+        setControlScreen(prevState => ({...prevState, ...modifier})) //modifico el estado teniendo en cuenta el valor previo y editando la data
+    }
 
-    // const [x, setX] = useState('0'); //guardar número en pantalla
-    // const handleX = (modifier) => {
-    //     setX(modifier);
-    // }
-    // const [xi, setXi] = useState(1); //iniciar número en pantalla: 1=si; 0=no;
-    // const [coma, setComa] = useState(0); //estado coma decimal 0=no, 1=si;
-    // const [ni, setNi] = useState(0); //número oculto o en espera.
-    // const [op, setOp] = useState('no'); //operación en curso; "no" =  sin operación.
-
+    
+   
     return(
         <div className='contenedor'>
-            <Form>
-                <Screen />
+            <Form>  {/* dentro de form indicamos los children */}
+                <Screen data={controlScreen} functionSet={handleControl} />   {/* manejo de pantalla */}
                 <br/>
-                <EraseBtn />
-                <NumOps />
+                <EraseBtn data={controlScreen} functionSet={handleControl}/>{/* manejo de botones borrar */}
+                <NumOps data={controlScreen} functionSet={handleControl}/>{/* manejo de botones numericos y operadores */}
             </Form>
         </div>
     )

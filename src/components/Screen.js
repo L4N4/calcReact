@@ -1,9 +1,10 @@
 import React from 'react';
 import '../assets/Container.css'
 
-function Screen() {
-    return(
-        <p id="campo">0</p>
+function Screen({data}) {
+    
+     return(
+        <p id="campo">{data.x}</p> // imprimimos en la pantalla el valor de x
     )
 }
 
